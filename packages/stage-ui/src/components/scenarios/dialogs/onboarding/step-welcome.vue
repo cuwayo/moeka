@@ -16,17 +16,14 @@ import { useI18n } from 'vue-i18n'
 
 import onboardingLogo from '../../../../assets/onboarding.avif'
 
-import { useOnboardingStore } from '../../../../stores/onboarding'
 import { useSettingsGeneral } from '../../../../stores/settings'
 
 interface Props {
-  customProviderSetupEnabled: boolean
   onNext: OnboardingStepNextHandler
 }
 
 const props = defineProps<Props>()
 const { t } = useI18n()
-const onboardingStore = useOnboardingStore()
 const settingsStore = useSettingsGeneral()
 const { language } = storeToRefs(settingsStore)
 
@@ -36,10 +33,6 @@ const languages = computed(() => {
 
 function handleLocalSetup() {
   props.onNext()
-}
-
-function handleLogin() {
-  onboardingStore.showingSetup = false
 }
 </script>
 
@@ -126,19 +119,6 @@ function handleLogin() {
     </div>
     <div :class="['flex', 'flex-col', 'gap-3', 'md:flex-row', 'm-2']">
       <Button
-        v-motion="{
-          initial: { opacity: 0 },
-          enter: { opacity: 1 },
-          duration: 500,
-          delay: 150,
-        }"
-        color="primary"
-        :label="t('settings.dialogs.onboarding.loginAction')"
-        :class="['flex-1']"
-        @click="handleLogin"
-      />
-      <Button
-        v-if="props.customProviderSetupEnabled"
         v-motion="{
           initial: { opacity: 0 },
           enter: { opacity: 1 },

@@ -7,7 +7,7 @@ import { createI18n } from 'vue-i18n'
 
 import StepWelcome from './step-welcome.vue'
 
-/** Creates the production English localization surface used by onboarding stores. */
+/** Creates the production English localization surface used by the onboarding welcome step. */
 function createTestI18n() {
   return createI18n({
     legacy: false,
@@ -19,11 +19,11 @@ function createTestI18n() {
 }
 
 /** Renders the welcome step with real Pinia and i18n plugins. */
-async function renderWelcomeStep(customProviderSetupEnabled: boolean) {
-  return render(StepWelcome, {
+async function renderWelcomeStep() {
+  const onNext = vi.fn()
+  const screen = await render(StepWelcome, {
     props: {
-      customProviderSetupEnabled,
-      onNext: vi.fn(),
+      onNext,
     },
     global: {
       directives: {
@@ -32,37 +32,28 @@ async function renderWelcomeStep(customProviderSetupEnabled: boolean) {
       plugins: [createPinia(), createTestI18n()],
     },
   })
+
+  return { onNext, screen }
 }
 
-/**
- * @example
- * describe('Steam onboarding provider restrictions', () => {})
- */
-describe('steam onboarding provider restrictions', () => {
-  /**
-   * @example
-   * it('keeps login without custom provider setup in Steam builds', async () => {})
-   */
-  it('keeps login without custom provider setup in Steam builds', async () => {
-    // ROOT CAUSE:
-    //
-    // The welcome step rendered its local-provider action without consulting
-    // the distribution restriction already used by settings and provider stores.
-    // A clean Steam install therefore exposed BYOK during onboarding even though
-    // the same provider paths were hidden after setup.
-    await renderWelcomeStep(false)
+describe('onboarding welcome step', () => {
+  // ROOT CAUSE:
+  //
+  // The welcome step used to render a "Sign in" action beside the provider
+  // setup action (https://github.com/moeru-ai/airi/pull/2052). Moeka has no
+  // sign-in service, so provider setup must stay the only action.
+  it('offers provider setup as the only action', async () => {
+    const { screen } = await renderWelcomeStep()
 
-    expect(document.body.textContent).toContain('Sign in')
-    expect(document.body.textContent).not.toContain('Setup with your provider')
+    await expect.element(screen.getByRole('button', { name: 'Setup with your provider' })).toBeVisible()
+    expect(document.body.textContent).not.toContain('Sign in')
   })
 
-  /**
-   * @example
-   * it('keeps custom provider setup in direct builds', async () => {})
-   */
-  it('keeps custom provider setup in direct builds', async () => {
-    await renderWelcomeStep(true)
+  it('continues to provider setup when the setup action is selected', async () => {
+    const { onNext, screen } = await renderWelcomeStep()
 
-    expect(document.body.textContent).toContain('Setup with your provider')
+    await screen.getByRole('button', { name: 'Setup with your provider' }).click()
+
+    expect(onNext).toHaveBeenCalledOnce()
   })
 })
