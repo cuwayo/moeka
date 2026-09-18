@@ -168,25 +168,28 @@ export const useChatStore = defineStore('chat', () => {
 
   /**
    * Initializes chat state and binds local consumers to synchronized leadership.
-   * A promoted renderer re-runs the leader-owned session bootstrap.
+   * The initial follower callback and later demotions share the same stop path.
    */
   async function initialize(syncedPinia: SyncedPiniaRuntime) {
+    await chatSession.initialize()
+
     stopLeadershipListener ??= syncedPinia.onLeadershipChange((isLeader) => {
-      if (!isLeader)
+      if (!isLeader) {
+        chatSession.dispose()
         return
+      }
 
       void chatSession.ensureCurrentSession().catch((error) => {
         console.error('[chat] Failed to ensure the chat session after leader promotion:', error)
       })
     })
-
-    await chatSession.initialize()
   }
 
   /** Detaches the leadership listener owned by this window. */
   function dispose() {
     stopLeadershipListener?.()
     stopLeadershipListener = undefined
+    chatSession.dispose()
   }
 
   async function streamWithStageAdapters(

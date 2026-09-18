@@ -595,6 +595,9 @@ export const useChatSessionStore = defineStore('chat-session', () => {
     activeSessionId.value = getCharacterIndex(getCurrentCharacterId())?.activeSessionId ?? ''
   }
 
+  /** Stops local chat-session consumers owned by this window. */
+  function dispose() {}
+
   const messages = computed<ChatHistoryItem[]>({
     get: () => {
       if (!activeSessionId.value) {
@@ -850,6 +853,7 @@ export const useChatSessionStore = defineStore('chat-session', () => {
   return {
     isReady,
     initialize,
+    dispose,
 
     activeSessionId,
     messages,

@@ -159,10 +159,10 @@ Three prototype configurations were built using Unity 3D, with compression appli
 ### Screenshots
 
 **Android Renderer — Live2D:**
-![Android Renderer Live2D prototype](./assets/Screenshot-Moeka-Live2D.avif)
+![Android Renderer Live2D prototype](./assets/Screenshot-AIRI-Live2D.avif)
 
 **Android Renderer — VRM:**
-![Android Renderer VRM prototype](./assets/Screenshot-Moeka-VRM.avif)
+![Android Renderer VRM prototype](./assets/Screenshot-AIRI-VRM.avif)
 
 The same Vue.js front-end is consistently applied to all prototype builds to ensure consistency. For Unity WebGL export, the original contents in WebView are directly substituted with Unity WebGL using [`unity-webgl`](https://github.com/Marinerer/unity-webgl). For Unity Android Renderer, the original view containing Three.js and VRM modules is removed entirely, and Unity renders as a background layer while the Vue.js UI is rendered over it.
 
@@ -202,7 +202,7 @@ All measurements were taken on a Samsung A34 under equivalent conditions. A lowe
 ![Unity Android Renderer Live2D](./assets/Live2D-android-renderer.avif)
 
 **Three.js — VRM (baseline):**
-![Original VRM Module from Moeka](./assets/VRM-airi.avif)
+![Original VRM Module from AIRI](./assets/VRM-airi.avif)
 
 **Unity WebGL — VRM:**
 ![Unity WebGL VRM](./assets/VRM-webgl.avif)
