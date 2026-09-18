@@ -3,7 +3,7 @@ title: DevLog @ 2026.03.23
 category: DevLog
 date: 2026-03-23
 excerpt: |
-  Initial investigation into improving AIRI mobile performance
+  Initial investigation into improving Moeka mobile performance
 preview-cover:
   light: "@assets('./assets/cover-light.avif')"
   dark: "@assets('./assets/cover-dark.avif')"
@@ -11,9 +11,9 @@ preview-cover:
 
 Hi, this is [@PurCHES5](https://github.com/PurCHES5).
 
-I've recently joined AIRI's team and will be working on AIRI's mobile development. With limited knowledge of this project and open-source workflows in general, my first task is to review the possibilities for integrating game engines or other technical solutions to improve the mobile build performance.
+I've recently joined Moeka's team and will be working on Moeka's mobile development. With limited knowledge of this project and open-source workflows in general, my first task is to review the possibilities for integrating game engines or other technical solutions to improve the mobile build performance.
 
-The current issue with AIRI's mobile integration is primarily related to performance. The latest mobile version [`stage-pocket`](https://github.com/moeru-ai/airi/tree/e952fe779e64494e778e44956eb1caf3338c61a7/apps/stage-pocket), is essentially a direct copy of the main Vue.js application packaged using Capacitor.
+The current issue with Moeka's mobile integration is primarily related to performance. The latest mobile version [`stage-pocket`](https://github.com/moeru-ai/airi/tree/e952fe779e64494e778e44956eb1caf3338c61a7/apps/stage-pocket), is essentially a direct copy of the main Vue.js application packaged using Capacitor.
 
 On mobile devices—especially iOS devices and lower-end hardware, the Live2D and VRM components quickly consume the available memory allocated to the WebView, which results in crashes.
 

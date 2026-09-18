@@ -68,7 +68,7 @@ const selectedProvider = computed(() => {
 const selectedProviderType = computed<ProviderMode>(() => {
   if (!selectedProviderId.value)
     return 'unknown'
-  return selectedProviderId.value.startsWith('official-provider') ? 'official' : 'custom'
+  return 'custom'
 })
 
 // Reset validation state when provider changes

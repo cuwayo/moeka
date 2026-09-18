@@ -16,7 +16,6 @@ import { useI18n } from 'vue-i18n'
 
 import onboardingLogo from '../../../../assets/onboarding.avif'
 
-import { useAuthStore } from '../../../../stores/auth'
 import { useOnboardingStore } from '../../../../stores/onboarding'
 import { useSettingsGeneral } from '../../../../stores/settings'
 
@@ -27,7 +26,6 @@ interface Props {
 
 const props = defineProps<Props>()
 const { t } = useI18n()
-const authStore = useAuthStore()
 const onboardingStore = useOnboardingStore()
 const settingsStore = useSettingsGeneral()
 const { language } = storeToRefs(settingsStore)
@@ -36,13 +34,12 @@ const languages = computed(() => {
   return Object.entries(all).map(([value, label]) => ({ value, label }))
 })
 
-function handleLogin() {
-  onboardingStore.showingSetup = false
-  authStore.needsLogin = true
-}
-
 function handleLocalSetup() {
   props.onNext()
+}
+
+function handleLogin() {
+  onboardingStore.showingSetup = false
 }
 </script>
 
@@ -133,10 +130,9 @@ function handleLocalSetup() {
           initial: { opacity: 0 },
           enter: { opacity: 1 },
           duration: 500,
-          delay: 200,
+          delay: 150,
         }"
         color="primary"
-        variant="secondary"
         :label="t('settings.dialogs.onboarding.loginAction')"
         :class="['flex-1']"
         @click="handleLogin"
@@ -147,8 +143,10 @@ function handleLocalSetup() {
           initial: { opacity: 0 },
           enter: { opacity: 1 },
           duration: 500,
-          delay: 250,
+          delay: 200,
         }"
+        color="primary"
+        variant="secondary"
         :label="t('settings.dialogs.onboarding.setupWithoutSigningIn')"
         :class="['flex-1']"
         @click="handleLocalSetup"
